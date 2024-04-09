@@ -11,21 +11,16 @@ class AddTaskDialog extends StatefulWidget {
 }
 
 class _AddTaskDialogState extends State<AddTaskDialog> {
-  bool isOk2 =
-      false; // Déclaration de la variable pour stocker l'état de la case à cocher
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController detailController = TextEditingController();
+  final TextEditingController groupIdController = TextEditingController();
+  final TextEditingController priorityController = TextEditingController();
+  final TextEditingController statusController = TextEditingController();
+
+  bool isOk2 = false;
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController creationDateController =
-        TextEditingController();
-    final TextEditingController modificationDateController =
-        TextEditingController();
-    final TextEditingController detailController = TextEditingController();
-    final TextEditingController groupIdController = TextEditingController();
-    final TextEditingController priorityController = TextEditingController();
-    final TextEditingController statusController = TextEditingController();
-
     return AlertDialog(
       title: Text('Add Task'),
       content: SingleChildScrollView(
@@ -38,49 +33,18 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
               ),
               controller: nameController,
             ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Creation Date',
-              ),
-              controller: creationDateController,
-            ),
             Row(
               children: [
                 Checkbox(
                   value: isOk2,
                   onChanged: (value) {
                     setState(() {
-                      isOk2 = value ??
-                          false; // Mise à jour de l'état de la case à cocher
+                      isOk2 = value ?? false;
                     });
                   },
                 ),
                 Text('Is Ok'),
               ],
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Date',
-              ),
-              controller: TextEditingController(
-                text: modificationDateController.text,
-              ),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                );
-
-                if (pickedDate != null) {
-                  setState(() {
-                    modificationDateController.text = pickedDate
-                        .toString(); // Mettre à jour la date sélectionnée dans le contrôleur de texte
-                    print(modificationDateController.text);
-                  });
-                }
-              },
             ),
             TextField(
               decoration: InputDecoration(
@@ -121,17 +85,17 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
           onPressed: () {
             final addTask = Task(
               name: nameController.text,
-              creationDate: creationDateController.text,
-              isOk: isOk2, // Conversion de booléen à entier
-              modificationDate: modificationDateController.text,
+              creationDate: DateTime.now().toString(),
+              isOk: isOk2,
+              modificationDate: DateTime.now().toString(),
               detail: detailController.text,
               userId: 1,
               groupId: int.tryParse(groupIdController.text) ?? 0,
               priority: int.tryParse(priorityController.text) ?? 0,
               status: statusController.text,
             );
-            print('task name');
-            print(addTask.name);
+            print('task ok');
+            print(addTask.isOk);
             print('task date');
             print(addTask.modificationDate);
             context.read<TaskBloc>().add(AddTaskEvent(addTask));

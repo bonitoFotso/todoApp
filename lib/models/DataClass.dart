@@ -102,7 +102,7 @@ class Task {
       id: map['id'],
       name: map['name'],
       creationDate: map['creation_date'],
-      isOk: map['is_ok'] == 1,
+      isOk: map['is_ok'] == true.toString(),
       modificationDate: map['modification_date'],
       detail: map['detail'],
       userId: map['user_id'],

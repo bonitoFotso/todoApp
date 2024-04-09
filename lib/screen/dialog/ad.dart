@@ -127,7 +127,7 @@ class _UpDateTaskTabState extends State<UpDateTaskTab> {
                       id: task.id,
                       name: nameController.text,
                       creationDate: creationDateController.text,
-                      isOk: isOk ? 1 : 0,
+                      isOk: isOk,
                       modificationDate: modificationDateController.text,
                       detail: detailController.text,
                       userId: task.userId,

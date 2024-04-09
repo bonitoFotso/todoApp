@@ -9,6 +9,7 @@ class TaskDetailsTab extends StatelessWidget {
     return Consumer<TaskProvider>(
       builder: (context, taskProvider, _) {
         Task task = taskProvider.task;
+        print(task.isOk);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -77,7 +77,9 @@ class _TodoListState extends State<TodoList> {
                   title: Text(
                     todoNames[index],
                     style: TextStyle(
-                      decoration: todoCompleted[index] ? TextDecoration.lineThrough : null,
+                      decoration: todoCompleted[index]
+                          ? TextDecoration.lineThrough
+                          : null,
                     ),
                   ),
                   value: taskSelected[index],
@@ -87,19 +89,6 @@ class _TodoListState extends State<TodoList> {
                     });
                   },
                 );
-                Row(
-              children: [
-                Checkbox(
-                  value: isOk,
-                  onChanged: (value) {
-                    setState(() {
-                      isOk = value ?? false; // Mettez à jour la valeur de Is Ok
-                    });
-                  },
-                ),
-                Text('Is Ok'),
-              ],
-            ),
               },
             ),
           ),

@@ -204,6 +204,7 @@ class DatabaseProvider {
     print(maps);
     print('Tasks retrieved successfully'); // Journalisation
     return List.generate(maps.length, (i) {
+      //print(maps[i]);
       return Task.fromMap(maps[i]);
     });
   }

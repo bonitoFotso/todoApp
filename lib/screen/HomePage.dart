@@ -18,29 +18,51 @@ class TaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('ToDoList')),
+      appBar: AppBar(
+        title: const Text('ToDoList'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              // Implement search functionality
+            },
+          ),
+        ],
+      ),
       body: BlocBuilder<TaskBloc, TaskState>(
         builder: (context, state) {
-          return ListView.builder(
+          return ListView.separated(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
             itemCount: state.tasks.length,
+            separatorBuilder: (BuildContext context, int index) => Divider(),
             itemBuilder: (context, index) {
               final Task task = state.tasks[index];
-              return ListTile(
-                title: Text(task.name!),
-                subtitle: Text('Creation Date: ${task.creationDate}'),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return TaskDetailDialog(task: task);
+              print(task.isOk);
+              Color backgroundColor =
+                  task.isOk ?? false ? Colors.green : Colors.white;
+              return Container(
+                color: backgroundColor,
+                child: Card(
+                  elevation: 3.0,
+                  child: ListTile(
+                    title: Text(task.name!),
+                    subtitle: Text('Creation Date: ${task.isOk}'),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return TaskDetailDialog(task: task);
+                        },
+                      );
                     },
-                  );
-                },
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    context.read<TaskBloc>().add(DeleteTaskEvent(task.id!));
-                  },
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        context.read<TaskBloc>().add(DeleteTaskEvent(task.id!));
+                      },
+                    ),
+                  ),
                 ),
               );
             },

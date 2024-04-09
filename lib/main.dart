@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/models/DatabaseProvider.dart';
-import 'package:todo/screen/HomePage.dart';
+import 'package:todo/screen/HomeScreen.dart';
+//import 'package:todo/screen/HomePage.dart';
 import 'package:todo/screen/LogingScreen.dart';
+//import 'package:todo/screen/todo/TodoPage.dart';
+//import 'package:todo/screen/todo/ui_view/body_measurement.dart';
 import 'package:todo/services/login/login_bloc.dart';
 import 'package:todo/services/task/task_bloc.dart';
 import 'package:todo/services/toggle/toggle_bloc.dart';
@@ -42,6 +45,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Todo List',
+        debugShowCheckedModeBanner: false,
         home: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
             if (state is LoginInitial) {
@@ -49,7 +53,7 @@ class MyApp extends StatelessWidget {
             } else if (state is LoginLoading) {
               return const CircularProgressIndicator();
             } else if (state is LoginSuccess) {
-              return HomePage();
+              return HomeScreen();
             } else if (state is LoginFailure) {
               return const CircularProgressIndicator();
             } else {
