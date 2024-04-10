@@ -9,7 +9,8 @@ part 'task_state.dart';
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final DatabaseProvider databaseProvider;
 
-  TaskBloc(this.databaseProvider) : super(TaskInitial([])) {
+  TaskBloc(this.databaseProvider)
+      : super(TaskInitial({'tasks': [], 'taskGroups': []})) {
     on<FetchTasks>(_onFetchTasks);
     on<UpdateTaskEvent>(_onUpDateTask);
     on<DeleteTaskEvent>(_onDeleteTask);
@@ -20,7 +21,13 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   Future<void> _onFetchTasks(FetchTasks event, Emitter<TaskState> emit) async {
     try {
       final tasks = await DatabaseProvider.getTasks();
-      emit(TaskSuccess(tasks.cast<Task>()));
+      final taskGroups = await DatabaseProvider.getTaskGroups();
+      final Map<String, List<Object>> data = {
+        'tasks': tasks,
+        'taskGroups': taskGroups,
+      };
+
+      emit(TaskSuccess(data)); // Emit a sing
     } catch (e) {
       //emit(TaskFailure(e.toString()) as TaskState);
     }
@@ -32,7 +39,13 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     try {
       await databaseProvider.deleteTask(taskId);
       final tasks = await DatabaseProvider.getTasks();
-      emit(TaskSuccess(tasks.cast<Task>()));
+      final taskGroups = await DatabaseProvider.getTaskGroups();
+      final Map<String, List<Object>> data = {
+        'tasks': tasks,
+        'taskGroups': taskGroups,
+      };
+
+      emit(TaskSuccess(data)); // Emit a sing
     } catch (e) {
       //emit(TaskFailure(e.toString()));
     }
@@ -43,7 +56,13 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       final newTask = event.task;
       await DatabaseProvider.addTask(newTask);
       final tasks = await DatabaseProvider.getTasks();
-      emit(TaskSuccess(tasks.cast<Task>()));
+      final taskGroups = await DatabaseProvider.getTaskGroups();
+      final Map<String, List<Object>> data = {
+        'tasks': tasks,
+        'taskGroups': taskGroups,
+      };
+
+      emit(TaskSuccess(data)); // Emit a sing
     } catch (e) {
       //emit(TaskFailure(e.toString()));
     }
@@ -55,7 +74,12 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       final upTask = event.updatedTask;
       await DatabaseProvider.updateTask(upTask);
       final tasks = await DatabaseProvider.getTasks();
-      emit(TaskSuccess(tasks.cast<Task>()));
+      final taskGroups = await DatabaseProvider.getTaskGroups();
+      final Map<String, List<Object>> data = {
+        'tasks': tasks,
+        'taskGroups': taskGroups,
+      };
+      emit(TaskSuccess(data));
     } catch (e) {
       //emit(TaskFailure(e.toString()));
     }
@@ -64,9 +88,16 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   Future<void> _onLoadTasks(LoadTasks event, Emitter<TaskState> emit) async {
     try {
       final tasks = await DatabaseProvider.getTasks();
-      emit(TaskSuccess(tasks.cast<Task>()));
+      final taskGroups = await DatabaseProvider.getTaskGroups();
+      final Map<String, List<Object>> data = {
+        'tasks': tasks,
+        'taskGroups': taskGroups,
+      };
+
+      emit(TaskSuccess(
+          data)); // Emit a single state containing both tasks and task groups
     } catch (e) {
-      //emit(TaskFailure(e.toString()));
+      print(e.toString());
     }
   }
 }

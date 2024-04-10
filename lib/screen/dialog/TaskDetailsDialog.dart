@@ -7,8 +7,12 @@ import 'package:todo/services/task/TaskProvider.dart';
 
 class TaskDetailDialog extends StatefulWidget {
   final Task task;
-
-  const TaskDetailDialog({Key? key, required this.task}) : super(key: key);
+  final List<TaskGroup> taskGroups;
+  const TaskDetailDialog({
+    Key? key,
+    required this.task,
+    required this.taskGroups,
+  }) : super(key: key);
 
   @override
   _TaskDetailDialogState createState() => _TaskDetailDialogState();

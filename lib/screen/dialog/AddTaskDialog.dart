@@ -1,30 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:todo/models/DataClass.dart';
 import 'package:todo/services/task/task_bloc.dart';
 
 class AddTaskDialog extends StatefulWidget {
-  const AddTaskDialog({Key? key}) : super(key: key);
+  final Map<String, List<Object>> dataTask;
+  const AddTaskDialog({Key? key, required this.dataTask}) : super(key: key);
 
   @override
   _AddTaskDialogState createState() => _AddTaskDialogState();
 }
 
 class _AddTaskDialogState extends State<AddTaskDialog> {
-  bool isOk2 =
-      false; // Déclaration de la variable pour stocker l'état de la case à cocher
+  bool isOk = false;
+  TaskGroup? selectedGroup;
+  int? selectedPriority;
+  String? selectedStatus;
+
+  String _name = '';
+  String _detail = '';
+
+  List<String> taskStatusOptions = [
+    'To Do',
+    'In Progress',
+    'Done',
+    'Pending',
+    'Cancelled',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    List<Object>? taskGroups = widget.dataTask['taskGroups'];
+    if (taskGroups != null && taskGroups.isNotEmpty) {
+      selectedGroup = taskGroups[0] as TaskGroup?;
+    }
+    selectedStatus = taskStatusOptions
+        .first; // Initialize selected status to the first status option
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController creationDateController =
-        TextEditingController();
-    final TextEditingController modificationDateController =
-        TextEditingController();
-    final TextEditingController detailController = TextEditingController();
-    final TextEditingController groupIdController = TextEditingController();
-    final TextEditingController priorityController = TextEditingController();
-    final TextEditingController statusController = TextEditingController();
+    final TextEditingController nameController =
+        TextEditingController(text: _name);
+    final TextEditingController detailController =
+        TextEditingController(text: _detail);
+    List<Object>? taskGroups = widget.dataTask['taskGroups'];
 
     return AlertDialog(
       title: Text('Add Task'),
@@ -37,49 +59,8 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                 labelText: 'Task Name',
               ),
               controller: nameController,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Creation Date',
-              ),
-              controller: creationDateController,
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  value: isOk2,
-                  onChanged: (value) {
-                    setState(() {
-                      isOk2 = value ??
-                          false; // Mise à jour de l'état de la case à cocher
-                    });
-                  },
-                ),
-                Text('Is Ok'),
-              ],
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Date',
-              ),
-              controller: TextEditingController(
-                text: modificationDateController.text,
-              ),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                );
-
-                if (pickedDate != null) {
-                  setState(() {
-                    modificationDateController.text = pickedDate
-                        .toString(); // Mettre à jour la date sélectionnée dans le contrôleur de texte
-                    print(modificationDateController.text);
-                  });
-                }
+              onChanged: (value) {
+                _name = value;
               },
             ),
             TextField(
@@ -87,24 +68,62 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                 labelText: 'Detail',
               ),
               controller: detailController,
+              onChanged: (value) {
+                _detail = value;
+              },
             ),
-            TextField(
+            DropdownButtonFormField<TaskGroup>(
               decoration: InputDecoration(
                 labelText: 'Group ID',
               ),
-              controller: groupIdController,
+              value: selectedGroup,
+              onChanged: (TaskGroup? newValue) {
+                setState(() {
+                  selectedGroup = newValue;
+                });
+              },
+              items:
+                  taskGroups!.map<DropdownMenuItem<TaskGroup>>((Object group) {
+                return DropdownMenuItem<TaskGroup>(
+                  value: group as TaskGroup,
+                  child: Text((group as TaskGroup).name),
+                );
+              }).toList(),
             ),
-            TextField(
+            DropdownButtonFormField<int>(
               decoration: InputDecoration(
                 labelText: 'Priority',
               ),
-              controller: priorityController,
+              value: selectedPriority,
+              onChanged: (int? newValue) {
+                setState(() {
+                  selectedPriority = newValue;
+                });
+              },
+              items: List.generate(10, (index) {
+                return DropdownMenuItem<int>(
+                  value: index + 1,
+                  child: Text((index + 1).toString()),
+                );
+              }),
             ),
-            TextField(
+            DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 labelText: 'Status',
               ),
-              controller: statusController,
+              value: selectedStatus,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedStatus = newValue;
+                });
+              },
+              items: taskStatusOptions
+                  .map<DropdownMenuItem<String>>((String status) {
+                return DropdownMenuItem<String>(
+                  value: status,
+                  child: Text(status),
+                );
+              }).toList(),
             ),
           ],
         ),
@@ -119,23 +138,29 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
         TextButton(
           child: Text('Add'),
           onPressed: () {
-            final addTask = Task(
-              name: nameController.text,
-              creationDate: creationDateController.text,
-              isOk: isOk2, // Conversion de booléen à entier
-              modificationDate: modificationDateController.text,
-              detail: detailController.text,
-              userId: 1,
-              groupId: int.tryParse(groupIdController.text) ?? 0,
-              priority: int.tryParse(priorityController.text) ?? 0,
-              status: statusController.text,
-            );
-            print('task name');
-            print(addTask.name);
-            print('task date');
-            print(addTask.modificationDate);
-            context.read<TaskBloc>().add(AddTaskEvent(addTask));
-            Navigator.of(context).pop();
+            String currentDate =
+                DateFormat('yyyy-MM-dd').format(DateTime.now());
+            String currentTime = DateFormat('HH:mm:ss').format(DateTime.now());
+
+            if (selectedGroup != null && selectedStatus != null) {
+              final addTask = Task(
+                name: _name,
+                creationDate: '$currentDate $currentTime',
+                isOk: isOk,
+                modificationDate: '$currentDate $currentTime',
+                detail: _detail,
+                userId: 1,
+                groupId: selectedGroup!.id,
+                priority: selectedPriority,
+                status: selectedStatus,
+              );
+
+              context.read<TaskBloc>().add(AddTaskEvent(addTask));
+              Navigator.of(context).pop();
+            } else {
+              // Handle case where either group or status is not selected
+              // You can display an alert or take another appropriate action
+            }
           },
         ),
       ],

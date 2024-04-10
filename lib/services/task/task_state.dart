@@ -1,26 +1,28 @@
 part of 'task_bloc.dart';
 
 abstract class TaskState extends Equatable {
-  final List<Task> tasks;
+  final Map<String, List<Object>> data;
 
-  const TaskState(this.tasks);
+  const TaskState(this.data);
 
   @override
-  List<Object> get props => [tasks];
+  List<Object> get props => [data];
 }
 
 class TaskInitial extends TaskState {
-  const TaskInitial(List<Task> tasks) : super(tasks);
+  const TaskInitial(Map<String, List<Object>> data) : super(data);
 }
 
 class TaskSuccess extends TaskState {
-  const TaskSuccess(List<Task> tasks) : super(tasks);
+  final Map<String, List<Object>> data;
+
+  const TaskSuccess(this.data) : super(data);
 }
 
 class TaskFailure extends TaskState {
   final String error;
 
-  const TaskFailure(this.error) : super(error as List<Task>);
+  const TaskFailure(this.error) : super(error as Map<String, List<Object>>);
 
   //@override
   //List<Object> get props => [error];

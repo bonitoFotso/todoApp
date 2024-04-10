@@ -13,7 +13,7 @@ class DatabaseProvider {
 
   Future<void> createDatabase() async {
     final databasesPath = await getDatabasesPath();
-    final String path = join(databasesPath, 'todo2.db');
+    final String path = join(databasesPath, 'todo225.db');
 
     _database = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
@@ -130,7 +130,7 @@ class DatabaseProvider {
 // Insertion d'une tâche par défaut
       await db.rawInsert('''
   INSERT INTO tasks(name, creation_date, is_ok, modification_date, detail, user_id, group_id, priority, status)
-  VALUES("Tâche par défaut", "2024-03-31", 0, "2024-03-31", "Détail de la tâche par défaut", 1, 1, 1, "En cours")
+  VALUES("Tâche par défaut", "2024-03-31", false, "2024-03-31", "Détail de la tâche par défaut", 1, 1, 1, "En cours")
 ''');
 
 // Insertion d'un planning de tâche par défaut
@@ -291,6 +291,649 @@ class DatabaseProvider {
     } catch (e) {
       print('Failed to delete task: $e');
       throw Exception('Failed to delete task');
+    }
+  }
+
+  static Future<void> addTaskGroup(TaskGroup taskGroup) async {
+    try {
+      final Database db = await _database;
+      await db.insert(
+        'task_groups',
+        taskGroup.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print('Task group added successfully');
+    } catch (e) {
+      print('Failed to add task group: $e');
+      throw Exception('Failed to add task group');
+    }
+  }
+
+  static Future<List<TaskGroup>> getTaskGroups() async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query('task_groups');
+      return List.generate(maps.length, (i) {
+        return TaskGroup.fromMap(maps[i]);
+      });
+    } catch (e) {
+      print('Failed to get task groups: $e');
+      throw Exception('Failed to get task groups');
+    }
+  }
+
+  static Future<TaskGroup?> getTaskGroupById(int id) async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'task_groups',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (maps.isNotEmpty) {
+        return TaskGroup.fromMap(maps[0]);
+      } else {
+        print('Task group with id $id not found');
+        return null;
+      }
+    } catch (e) {
+      print('Failed to get task group: $e');
+      throw Exception('Failed to get task group');
+    }
+  }
+
+  static Future<void> updateTaskGroup(TaskGroup taskGroup) async {
+    try {
+      final Database db = await _database;
+      await db.update(
+        'task_groups',
+        taskGroup.toMap(),
+        where: 'id = ?',
+        whereArgs: [taskGroup.id],
+      );
+      print('Task group updated successfully');
+    } catch (e) {
+      print('Failed to update task group: $e');
+      throw Exception('Failed to update task group');
+    }
+  }
+
+  static Future<void> deleteTaskGroup(int id) async {
+    try {
+      final Database db = await _database;
+      await db.delete(
+        'task_groups',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print('Task group deleted successfully');
+    } catch (e) {
+      print('Failed to delete task group: $e');
+      throw Exception('Failed to delete task group');
+    }
+  }
+
+  static Future<void> addTaskSchedule(TaskSchedule taskSchedule) async {
+    try {
+      final Database db = await _database;
+      await db.insert(
+        'task_schedules',
+        taskSchedule.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print('Task schedule added successfully');
+    } catch (e) {
+      print('Failed to add task schedule: $e');
+      throw Exception('Failed to add task schedule');
+    }
+  }
+
+  static Future<List<TaskSchedule>> getTaskSchedules() async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query('task_schedules');
+      return List.generate(maps.length, (i) {
+        return TaskSchedule.fromMap(maps[i]);
+      });
+    } catch (e) {
+      print('Failed to get task schedules: $e');
+      throw Exception('Failed to get task schedules');
+    }
+  }
+
+  static Future<TaskSchedule?> getTaskScheduleById(int id) async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'task_schedules',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (maps.isNotEmpty) {
+        return TaskSchedule.fromMap(maps[0]);
+      } else {
+        print('Task schedule with id $id not found');
+        return null;
+      }
+    } catch (e) {
+      print('Failed to get task schedule: $e');
+      throw Exception('Failed to get task schedule');
+    }
+  }
+
+  static Future<void> updateTaskSchedule(TaskSchedule taskSchedule) async {
+    try {
+      final Database db = await _database;
+      await db.update(
+        'task_schedules',
+        taskSchedule.toMap(),
+        where: 'id = ?',
+        whereArgs: [taskSchedule.id],
+      );
+      print('Task schedule updated successfully');
+    } catch (e) {
+      print('Failed to update task schedule: $e');
+      throw Exception('Failed to update task schedule');
+    }
+  }
+
+  static Future<void> deleteTaskSchedule(int id) async {
+    try {
+      final Database db = await _database;
+      await db.delete(
+        'task_schedules',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print('Task schedule deleted successfully');
+    } catch (e) {
+      print('Failed to delete task schedule: $e');
+      throw Exception('Failed to delete task schedule');
+    }
+  }
+
+  static Future<void> addTaskScheduleDay(
+      TaskScheduleDay taskScheduleDay) async {
+    try {
+      final Database db = await _database;
+      await db.insert(
+        'task_schedule_days',
+        taskScheduleDay.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print('Task schedule day added successfully');
+    } catch (e) {
+      print('Failed to add task schedule day: $e');
+      throw Exception('Failed to add task schedule day');
+    }
+  }
+
+  static Future<List<TaskScheduleDay>> getTaskScheduleDays() async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps =
+          await db.query('task_schedule_days');
+      return List.generate(maps.length, (i) {
+        return TaskScheduleDay.fromMap(maps[i]);
+      });
+    } catch (e) {
+      print('Failed to get task schedule days: $e');
+      throw Exception('Failed to get task schedule days');
+    }
+  }
+
+  static Future<TaskScheduleDay?> getTaskScheduleDayById(int id) async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'task_schedule_days',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (maps.isNotEmpty) {
+        return TaskScheduleDay.fromMap(maps[0]);
+      } else {
+        print('Task schedule day with id $id not found');
+        return null;
+      }
+    } catch (e) {
+      print('Failed to get task schedule day: $e');
+      throw Exception('Failed to get task schedule day');
+    }
+  }
+
+  static Future<void> updateTaskScheduleDay(
+      TaskScheduleDay taskScheduleDay) async {
+    try {
+      final Database db = await _database;
+      await db.update(
+        'task_schedule_days',
+        taskScheduleDay.toMap(),
+        where: 'id = ?',
+        whereArgs: [taskScheduleDay.id],
+      );
+      print('Task schedule day updated successfully');
+    } catch (e) {
+      print('Failed to update task schedule day: $e');
+      throw Exception('Failed to update task schedule day');
+    }
+  }
+
+  static Future<void> deleteTaskScheduleDay(int id) async {
+    try {
+      final Database db = await _database;
+      await db.delete(
+        'task_schedule_days',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print('Task schedule day deleted successfully');
+    } catch (e) {
+      print('Failed to delete task schedule day: $e');
+      throw Exception('Failed to delete task schedule day');
+    }
+  }
+
+  static Future<void> addTaskReport(TaskReport taskReport) async {
+    try {
+      final Database db = await _database;
+      await db.insert(
+        'task_reports',
+        taskReport.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print('Task report added successfully');
+    } catch (e) {
+      print('Failed to add task report: $e');
+      throw Exception('Failed to add task report');
+    }
+  }
+
+  static Future<List<TaskReport>> getTaskReports() async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query('task_reports');
+      return List.generate(maps.length, (i) {
+        return TaskReport.fromMap(maps[i]);
+      });
+    } catch (e) {
+      print('Failed to get task reports: $e');
+      throw Exception('Failed to get task reports');
+    }
+  }
+
+  static Future<TaskReport?> getTaskReportById(int id) async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'task_reports',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (maps.isNotEmpty) {
+        return TaskReport.fromMap(maps[0]);
+      } else {
+        print('Task report with id $id not found');
+        return null;
+      }
+    } catch (e) {
+      print('Failed to get task report: $e');
+      throw Exception('Failed to get task report');
+    }
+  }
+
+  static Future<void> updateTaskReport(TaskReport taskReport) async {
+    try {
+      final Database db = await _database;
+      await db.update(
+        'task_reports',
+        taskReport.toMap(),
+        where: 'id = ?',
+        whereArgs: [taskReport.id],
+      );
+      print('Task report updated successfully');
+    } catch (e) {
+      print('Failed to update task report: $e');
+      throw Exception('Failed to update task report');
+    }
+  }
+
+  static Future<void> deleteTaskReport(int id) async {
+    try {
+      final Database db = await _database;
+      await db.delete(
+        'task_reports',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print('Task report deleted successfully');
+    } catch (e) {
+      print('Failed to delete task report: $e');
+      throw Exception('Failed to delete task report');
+    }
+  }
+
+  static Future<void> addTaskTag(TaskTag taskTag) async {
+    try {
+      final Database db = await _database;
+      await db.insert(
+        'task_tags',
+        taskTag.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print('Task tag added successfully');
+    } catch (e) {
+      print('Failed to add task tag: $e');
+      throw Exception('Failed to add task tag');
+    }
+  }
+
+  static Future<List<TaskTag>> getTaskTags() async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query('task_tags');
+      return List.generate(maps.length, (i) {
+        return TaskTag.fromMap(maps[i]);
+      });
+    } catch (e) {
+      print('Failed to get task tags: $e');
+      throw Exception('Failed to get task tags');
+    }
+  }
+
+  static Future<TaskTag?> getTaskTagById(int id) async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'task_tags',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (maps.isNotEmpty) {
+        return TaskTag.fromMap(maps[0]);
+      } else {
+        print('Task tag with id $id not found');
+        return null;
+      }
+    } catch (e) {
+      print('Failed to get task tag: $e');
+      throw Exception('Failed to get task tag');
+    }
+  }
+
+  static Future<void> updateTaskTag(TaskTag taskTag) async {
+    try {
+      final Database db = await _database;
+      await db.update(
+        'task_tags',
+        taskTag.toMap(),
+        where: 'id = ?',
+        whereArgs: [taskTag.id],
+      );
+      print('Task tag updated successfully');
+    } catch (e) {
+      print('Failed to update task tag: $e');
+      throw Exception('Failed to update task tag');
+    }
+  }
+
+  static Future<void> deleteTaskTag(int id) async {
+    try {
+      final Database db = await _database;
+      await db.delete(
+        'task_tags',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print('Task tag deleted successfully');
+    } catch (e) {
+      print('Failed to delete task tag: $e');
+      throw Exception('Failed to delete task tag');
+    }
+  }
+
+  static Future<void> addTaskAttachment(TaskAttachment taskAttachment) async {
+    try {
+      final Database db = await _database;
+      await db.insert(
+        'task_attachments',
+        taskAttachment.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print('Task attachment added successfully');
+    } catch (e) {
+      print('Failed to add task attachment: $e');
+      throw Exception('Failed to add task attachment');
+    }
+  }
+
+  static Future<List<TaskAttachment>> getTaskAttachments() async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps =
+          await db.query('task_attachments');
+      return List.generate(maps.length, (i) {
+        return TaskAttachment.fromMap(maps[i]);
+      });
+    } catch (e) {
+      print('Failed to get task attachments: $e');
+      throw Exception('Failed to get task attachments');
+    }
+  }
+
+  static Future<TaskAttachment?> getTaskAttachmentById(int id) async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'task_attachments',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (maps.isNotEmpty) {
+        return TaskAttachment.fromMap(maps[0]);
+      } else {
+        print('Task attachment with id $id not found');
+        return null;
+      }
+    } catch (e) {
+      print('Failed to get task attachment: $e');
+      throw Exception('Failed to get task attachment');
+    }
+  }
+
+  static Future<void> updateTaskAttachment(
+      TaskAttachment taskAttachment) async {
+    try {
+      final Database db = await _database;
+      await db.update(
+        'task_attachments',
+        taskAttachment.toMap(),
+        where: 'id = ?',
+        whereArgs: [taskAttachment.id],
+      );
+      print('Task attachment updated successfully');
+    } catch (e) {
+      print('Failed to update task attachment: $e');
+      throw Exception('Failed to update task attachment');
+    }
+  }
+
+  static Future<void> deleteTaskAttachment(int id) async {
+    try {
+      final Database db = await _database;
+      await db.delete(
+        'task_attachments',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print('Task attachment deleted successfully');
+    } catch (e) {
+      print('Failed to delete task attachment: $e');
+      throw Exception('Failed to delete task attachment');
+    }
+  }
+
+  static Future<void> addTaskActionHistory(
+      TaskActionHistory taskActionHistory) async {
+    try {
+      final Database db = await _database;
+      await db.insert(
+        'task_actions_history',
+        taskActionHistory.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print('Task action history added successfully');
+    } catch (e) {
+      print('Failed to add task action history: $e');
+      throw Exception('Failed to add task action history');
+    }
+  }
+
+  static Future<List<TaskActionHistory>> getTaskActionHistories() async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps =
+          await db.query('task_actions_history');
+      return List.generate(maps.length, (i) {
+        return TaskActionHistory.fromMap(maps[i]);
+      });
+    } catch (e) {
+      print('Failed to get task action histories: $e');
+      throw Exception('Failed to get task action histories');
+    }
+  }
+
+  static Future<TaskActionHistory?> getTaskActionHistoryById(int id) async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'task_actions_history',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (maps.isNotEmpty) {
+        return TaskActionHistory.fromMap(maps[0]);
+      } else {
+        print('Task action history with id $id not found');
+        return null;
+      }
+    } catch (e) {
+      print('Failed to get task action history: $e');
+      throw Exception('Failed to get task action history');
+    }
+  }
+
+  static Future<void> updateTaskActionHistory(
+      TaskActionHistory taskActionHistory) async {
+    try {
+      final Database db = await _database;
+      await db.update(
+        'task_actions_history',
+        taskActionHistory.toMap(),
+        where: 'id = ?',
+        whereArgs: [taskActionHistory.id],
+      );
+      print('Task action history updated successfully');
+    } catch (e) {
+      print('Failed to update task action history: $e');
+      throw Exception('Failed to update task action history');
+    }
+  }
+
+  static Future<void> deleteTaskActionHistory(int id) async {
+    try {
+      final Database db = await _database;
+      await db.delete(
+        'task_actions_history',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print('Task action history deleted successfully');
+    } catch (e) {
+      print('Failed to delete task action history: $e');
+      throw Exception('Failed to delete task action history');
+    }
+  }
+
+  static Future<void> addTaskCollaborator(
+      TaskCollaborator taskCollaborator) async {
+    try {
+      final Database db = await _database;
+      await db.insert(
+        'task_collaborators',
+        taskCollaborator.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print('Task collaborator added successfully');
+    } catch (e) {
+      print('Failed to add task collaborator: $e');
+      throw Exception('Failed to add task collaborator');
+    }
+  }
+
+  static Future<List<TaskCollaborator>> getTaskCollaborators() async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps =
+          await db.query('task_collaborators');
+      return List.generate(maps.length, (i) {
+        return TaskCollaborator.fromMap(maps[i]);
+      });
+    } catch (e) {
+      print('Failed to get task collaborators: $e');
+      throw Exception('Failed to get task collaborators');
+    }
+  }
+
+  static Future<TaskCollaborator?> getTaskCollaboratorById(int id) async {
+    try {
+      final Database db = await _database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'task_collaborators',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (maps.isNotEmpty) {
+        return TaskCollaborator.fromMap(maps[0]);
+      } else {
+        print('Task collaborator with id $id not found');
+        return null;
+      }
+    } catch (e) {
+      print('Failed to get task collaborator: $e');
+      throw Exception('Failed to get task collaborator');
+    }
+  }
+
+  static Future<void> updateTaskCollaborator(
+      TaskCollaborator taskCollaborator) async {
+    try {
+      final Database db = await _database;
+      await db.update(
+        'task_collaborators',
+        taskCollaborator.toMap(),
+        where: 'id = ?',
+        whereArgs: [taskCollaborator.id],
+      );
+      print('Task collaborator updated successfully');
+    } catch (e) {
+      print('Failed to update task collaborator: $e');
+      throw Exception('Failed to update task collaborator');
+    }
+  }
+
+  static Future<void> deleteTaskCollaborator(int id) async {
+    try {
+      final Database db = await _database;
+      await db.delete(
+        'task_collaborators',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print('Task collaborator deleted successfully');
+    } catch (e) {
+      print('Failed to delete task collaborator: $e');
+      throw Exception('Failed to delete task collaborator');
     }
   }
 }
