@@ -340,3 +340,161 @@ class TaskCollaborator {
     );
   }
 }
+
+class ExpenseCategory {
+  int id;
+  String name;
+
+  ExpenseCategory({required this.id, required this.name});
+
+  factory ExpenseCategory.fromMap(Map<String, dynamic> map) => ExpenseCategory(
+        id: map['id'],
+        name: map['name'],
+      );
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class PaymentMethod {
+  int id;
+  String name;
+
+  PaymentMethod({required this.id, required this.name});
+
+  factory PaymentMethod.fromMap(Map<String, dynamic> map) => PaymentMethod(
+        id: map['id'],
+        name: map['name'],
+      );
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class Transaction {
+  int id;
+  int userId;
+  int categoryId;
+  int paymentMethodId;
+  double amount;
+  String date;
+  String note;
+
+  Transaction({
+    required this.id,
+    required this.userId,
+    required this.categoryId,
+    required this.paymentMethodId,
+    required this.amount,
+    required this.date,
+    required this.note,
+  });
+
+  factory Transaction.fromMap(Map<String, dynamic> map) => Transaction(
+        id: map['id'],
+        userId: map['user_id'],
+        categoryId: map['category_id'],
+        paymentMethodId: map['payment_method_id'],
+        amount: map['amount'],
+        date: map['date'],
+        note: map['note'],
+      );
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'user_id': userId,
+        'category_id': categoryId,
+        'payment_method_id': paymentMethodId,
+        'amount': amount,
+        'date': date,
+        'note': note,
+      };
+}
+
+class Budget {
+  int id;
+  int userId;
+  int categoryId;
+  double amount;
+  String startDate;
+  String endDate;
+
+  Budget({
+    required this.id,
+    required this.userId,
+    required this.categoryId,
+    required this.amount,
+    required this.startDate,
+    required this.endDate,
+  });
+
+  factory Budget.fromMap(Map<String, dynamic> map) => Budget(
+        id: map['id'],
+        userId: map['user_id'],
+        categoryId: map['category_id'],
+        amount: map['amount'],
+        startDate: map['start_date'],
+        endDate: map['end_date'],
+      );
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'user_id': userId,
+        'category_id': categoryId,
+        'amount': amount,
+        'start_date': startDate,
+        'end_date': endDate,
+      };
+}
+
+class TaskTransaction {
+  int id;
+  int taskId;
+  int transactionId;
+
+  TaskTransaction({
+    required this.id,
+    required this.taskId,
+    required this.transactionId,
+  });
+
+  factory TaskTransaction.fromMap(Map<String, dynamic> map) => TaskTransaction(
+        id: map['id'],
+        taskId: map['task_id'],
+        transactionId: map['transaction_id'],
+      );
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'task_id': taskId,
+        'transaction_id': transactionId,
+      };
+}
+
+class TaskBudget {
+  int id;
+  int taskId;
+  int budgetId;
+
+  TaskBudget({
+    required this.id,
+    required this.taskId,
+    required this.budgetId,
+  });
+
+  factory TaskBudget.fromMap(Map<String, dynamic> map) => TaskBudget(
+        id: map['id'],
+        taskId: map['task_id'],
+        budgetId: map['budget_id'],
+      );
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'task_id': taskId,
+        'budget_id': budgetId,
+      };
+}

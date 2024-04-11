@@ -1,11 +1,7 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/TodoList.dart';
-import 'package:todo/models/DataClass.dart';
-import 'package:todo/screen/dialog/AddTaskDialog.dart';
-import 'package:todo/screen/dialog/TaskDetailsDialog.dart';
+import 'package:todo/screen/task/AddTaskPage.dart';
 import 'package:todo/screen/task/TaskPage.dart';
-import 'package:todo/services/task/task_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,23 +22,41 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Todo"),
+          title: [
+            const Text("Todo"),
+            const Text("planning"),
+            const Text("Add Task"),
+            const Text("Todo"),
+            const Text("Todo"),
+          ][_currentIndex],
         ),
         body: [
           TaskPage(),
           TaskPage(),
+          const AddTaskPage(),
+          const AddTaskPage(),
+          const AddTaskPage(),
         ][_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) => setCurrentIndex(index),
-          selectedItemColor: Colors.green,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Task'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_month), label: 'planning')
+        bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: Colors.transparent,
+          buttonBackgroundColor: Colors.green,
+          color: Colors.green,
+          animationDuration: const Duration(milliseconds: 300),
+          items: const <Widget>[
+            Icon(Icons.home, size: 26, color: Colors.white),
+            Icon(Icons.message, size: 26, color: Colors.white),
+            Icon(Icons.add, size: 26, color: Colors.white),
+            Icon(Icons.notifications, size: 26, color: Colors.white),
+            Icon(Icons.person, size: 26, color: Colors.white),
           ],
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
         ),
       ),
     );

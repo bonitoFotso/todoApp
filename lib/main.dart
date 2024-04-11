@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        title: 'Todo List',
+        debugShowCheckedModeBanner: false,
         home: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
             if (state is LoginInitial) {
