@@ -5,7 +5,7 @@ import 'package:todo/services/task/TaskProvider.dart';
 import 'package:todo/services/task/task_bloc.dart';
 
 class UpDateTaskTab extends StatefulWidget {
-  const UpDateTaskTab({Key? key}) : super(key: key);
+  const UpDateTaskTab({super.key});
 
   @override
   _UpDateTaskTabState createState() => _UpDateTaskTabState();

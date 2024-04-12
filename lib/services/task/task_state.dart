@@ -10,10 +10,11 @@ abstract class TaskState extends Equatable {
 }
 
 class TaskInitial extends TaskState {
-  const TaskInitial(Map<String, List<Object>> data) : super(data);
+  const TaskInitial(super.data);
 }
 
 class TaskSuccess extends TaskState {
+  @override
   final Map<String, List<Object>> data;
 
   const TaskSuccess(this.data) : super(data);

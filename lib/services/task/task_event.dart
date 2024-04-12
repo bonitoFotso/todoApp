@@ -12,7 +12,7 @@ class FetchTasks extends TaskEvent {
 class AddTaskEvent extends TaskEvent {
   final Task task;
 
-  AddTaskEvent(this.task);
+  const AddTaskEvent(this.task);
 
   @override
   List<Object> get props => [task];
@@ -21,7 +21,7 @@ class AddTaskEvent extends TaskEvent {
 class UpdateTaskEvent extends TaskEvent {
   final Task updatedTask;
 
-  UpdateTaskEvent(this.updatedTask);
+  const UpdateTaskEvent(this.updatedTask);
 
   @override
   List<Object> get props => [updatedTask];
@@ -30,7 +30,7 @@ class UpdateTaskEvent extends TaskEvent {
 class DeleteTaskEvent extends TaskEvent {
   final int index;
 
-  DeleteTaskEvent(this.index);
+  const DeleteTaskEvent(this.index);
 
   @override
   List<Object> get props => [index];

@@ -22,7 +22,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   final DatabaseProvider databaseProvider;
 
-  const MyApp({Key? key, required this.databaseProvider}) : super(key: key);
+  const MyApp({super.key, required this.databaseProvider});
   // Ajoutez le paramètre databaseProvider dans le constructeur
 
   @override
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
             } else if (state is LoginLoading) {
               return const CircularProgressIndicator();
             } else if (state is LoginSuccess) {
-              return HomePage();
+              return const HomePage();
             } else if (state is LoginFailure) {
               return const CircularProgressIndicator();
             } else {

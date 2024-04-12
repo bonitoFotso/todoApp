@@ -1,15 +1,15 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:todo/screen/dialog/AddTaskDialog.dart';
+import 'package:todo/screen/Home.dart';
 import 'package:todo/screen/task/AddTaskPage.dart';
 import 'package:todo/screen/task/TaskPage.dart';
-import 'package:todo/screen/task/dashboardPage.dart';
+//import 'package:todo/screen/task/dashboardPage.dart';
 import 'package:todo/screen/task/historiquePage.dart';
 import 'package:todo/screen/task/planningPage.dart';
 import 'package:todo/screen/task/profilePage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -35,20 +35,20 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              child: Text('Menu'),
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
+              child: Text('Menu'),
             ),
             ListTile(
-              title: Text('Option 1'),
+              title: const Text('Option 1'),
               onTap: () {
                 // Action spécifique pour l'option 1
               },
             ),
             ListTile(
-              title: Text('Option 2'),
+              title: const Text('Option 2'),
               onTap: () {
                 // Action spécifique pour l'option 2
               },
@@ -58,11 +58,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: [
-        TaskPage(),
-        PanningPage(),
-        DashboardPage(),
-        HistoriquePage(),
-        ProfilePage(),
+        const TaskPage(),
+        const PanningPage(),
+        const DashboardPage(),
+        const HistoriquePage(),
+        const ProfilePage(),
       ][_currentIndex],
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
       case 0:
         return [
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () {
               Navigator.push(
                 context,

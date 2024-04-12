@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatelessWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+  const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: const Text('Dashboard'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -23,18 +23,18 @@ class DashboardPage extends StatelessWidget {
                   children: [
                     Text(
                       'Welcome Back!',
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       'John Doe',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -88,7 +88,7 @@ class DashboardPage extends StatelessWidget {
                 size: 48,
                 color: Theme.of(context).primaryColor,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 label,
                 style: Theme.of(context).textTheme.titleMedium,

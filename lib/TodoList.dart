@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo/DatabaseHelper.dart';
 
 class TodoList extends StatefulWidget {
-  const TodoList({Key? key});
+  const TodoList({super.key, Key? key});
 
   @override
   createState() => _TodoListState();

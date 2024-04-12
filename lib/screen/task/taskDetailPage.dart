@@ -9,10 +9,10 @@ class TaskDetailPage extends StatefulWidget {
   final Task task;
   final List<TaskGroup> taskGroups;
   const TaskDetailPage({
-    Key? key,
+    super.key,
     required this.task,
     required this.taskGroups,
-  }) : super(key: key);
+  });
 
   @override
   _TaskDetailPageState createState() => _TaskDetailPageState();
@@ -35,7 +35,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
           TaskProvider(widget.task), // Provide the initial state of the task
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Task Details'),
+          title: const Text('Task Details'),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,16 +43,16 @@ class _TaskDetailPageState extends State<TaskDetailPage>
           children: [
             TabBar(
               controller: _tabController,
-              tabs: [
+              tabs: const [
                 Tab(text: 'Details'),
                 Tab(text: 'Modifier'),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: [
+                children: const [
                   // Tab for the general details of the task
                   TaskDetailsTab(),
                   // Tab for updating the task

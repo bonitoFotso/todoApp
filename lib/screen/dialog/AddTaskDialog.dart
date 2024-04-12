@@ -5,7 +5,7 @@ import 'package:todo/models/DataClass.dart';
 import 'package:todo/services/task/task_bloc.dart';
 
 class AddTaskDialog extends StatefulWidget {
-  const AddTaskDialog({Key? key}) : super(key: key);
+  const AddTaskDialog({super.key});
 
   @override
   _AddTaskDialogState createState() => _AddTaskDialogState();
@@ -42,18 +42,18 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
         TextEditingController(text: detail);
 
     return AlertDialog(
-      title: Text('Add Task'),
+      title: const Text('Add Task'),
       content: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-              decoration: InputDecoration(labelText: 'Task Name'),
+              decoration: const InputDecoration(labelText: 'Task Name'),
               controller: nameController,
               onChanged: (value) => setState(() => name = value),
             ),
             TextField(
-              decoration: InputDecoration(labelText: 'Detail'),
+              decoration: const InputDecoration(labelText: 'Detail'),
               controller: detailController,
               onChanged: (value) => setState(() => detail = value),
             ),
@@ -64,10 +64,10 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                       state.data["taskGroups"] as List<TaskGroup>;
 
                   return DropdownButtonFormField<int>(
-                    decoration: InputDecoration(labelText: 'Group ID'),
+                    decoration: const InputDecoration(labelText: 'Group ID'),
                     value: selectedGroupId,
                     onChanged: (newValue) =>
-                        setState(() => selectedGroupId = newValue as int?),
+                        setState(() => selectedGroupId = newValue),
                     items: taskGroups.map<DropdownMenuItem<int>>((group) {
                       return DropdownMenuItem<int>(
                         value: group
@@ -77,12 +77,12 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                     }).toList(),
                   );
                 } else {
-                  return CircularProgressIndicator(); // Placeholder until groups are loaded
+                  return const CircularProgressIndicator(); // Placeholder until groups are loaded
                 }
               },
             ),
             DropdownButtonFormField<int>(
-              decoration: InputDecoration(labelText: 'Priority'),
+              decoration: const InputDecoration(labelText: 'Priority'),
               value: selectedPriority,
               onChanged: (newValue) =>
                   setState(() => selectedPriority = newValue),
@@ -94,7 +94,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
               }),
             ),
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'Status'),
+              decoration: const InputDecoration(labelText: 'Status'),
               value: selectedStatus,
               onChanged: (newValue) =>
                   setState(() => selectedStatus = newValue!),
@@ -110,13 +110,13 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         TextButton(
-          child: Text('Add'),
+          child: const Text('Add'),
           onPressed: () {
             final currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
             final currentTime = DateFormat('HH:mm:ss').format(DateTime.now());

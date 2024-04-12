@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class HistoriquePage extends StatelessWidget {
-  const HistoriquePage({Key? key}) : super(key: key);
+  const HistoriquePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Historique'),
+        title: const Text('Historique'),
       ),
       body: ListView.builder(
         itemCount: _historiqueTasks.length,
@@ -32,17 +32,17 @@ class HistoriquePage extends StatelessWidget {
   Widget _buildStatusIcon(String status) {
     switch (status) {
       case 'To Do':
-        return Icon(Icons.pending_outlined, color: Colors.orange);
+        return const Icon(Icons.pending_outlined, color: Colors.orange);
       case 'In Progress':
-        return Icon(Icons.hourglass_empty_outlined, color: Colors.blue);
+        return const Icon(Icons.hourglass_empty_outlined, color: Colors.blue);
       case 'Done':
-        return Icon(Icons.check_circle_outline, color: Colors.green);
+        return const Icon(Icons.check_circle_outline, color: Colors.green);
       case 'Pending':
-        return Icon(Icons.pending_actions_outlined, color: Colors.yellow);
+        return const Icon(Icons.pending_actions_outlined, color: Colors.yellow);
       case 'Cancelled':
-        return Icon(Icons.cancel_outlined, color: Colors.red);
+        return const Icon(Icons.cancel_outlined, color: Colors.red);
       default:
-        return Icon(Icons.error_outline);
+        return const Icon(Icons.error_outline);
     }
   }
 }
@@ -64,27 +64,27 @@ class Task {
 final List<Task> _historiqueTasks = [
   Task(
       name: 'Task 1',
-      date: DateTime.now().subtract(Duration(days: 5)),
+      date: DateTime.now().subtract(const Duration(days: 5)),
       status: 'Done',
       priority: 2),
   Task(
       name: 'Task 2',
-      date: DateTime.now().subtract(Duration(days: 7)),
+      date: DateTime.now().subtract(const Duration(days: 7)),
       status: 'Cancelled',
       priority: 1),
   Task(
       name: 'Task 3',
-      date: DateTime.now().subtract(Duration(days: 10)),
+      date: DateTime.now().subtract(const Duration(days: 10)),
       status: 'To Do',
       priority: 3),
   Task(
       name: 'Task 4',
-      date: DateTime.now().subtract(Duration(days: 15)),
+      date: DateTime.now().subtract(const Duration(days: 15)),
       status: 'In Progress',
       priority: 2),
   Task(
       name: 'Task 5',
-      date: DateTime.now().subtract(Duration(days: 20)),
+      date: DateTime.now().subtract(const Duration(days: 20)),
       status: 'Done',
       priority: 1),
 ];

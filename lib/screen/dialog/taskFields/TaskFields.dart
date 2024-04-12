@@ -5,10 +5,10 @@ class TaskField extends StatelessWidget {
   final TextEditingController controller;
 
   const TaskField({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.controller,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class TaskField extends StatelessWidget {
           controller: controller,
         ),
 
-        SizedBox(height: 16), // Ajoutez un espacement vertical entre les champs
+        const SizedBox(height: 16), // Ajoutez un espacement vertical entre les champs
       ],
     );
   }

@@ -6,8 +6,8 @@ import 'package:todo/services/task/task_bloc.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _AddTaskPageState createState() => _AddTaskPageState();
@@ -47,7 +47,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Task'),
+        title: const Text('Add Task'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -59,7 +59,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               children: [
                 /// Your TextFormField for task name
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Task Name'),
+                  decoration: const InputDecoration(labelText: 'Task Name'),
                   controller: nameController,
                   //onChanged: (value) => setState(() => name = value),
                   validator: (value) {
@@ -72,7 +72,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
 // Your TextFormField for task detail
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Detail'),
+                  decoration: const InputDecoration(labelText: 'Detail'),
                   controller: detailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -89,7 +89,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           state.data["taskGroups"] as List<TaskGroup>;
 
                       return DropdownButtonFormField<int>(
-                        decoration: InputDecoration(labelText: 'Group ID'),
+                        decoration: const InputDecoration(labelText: 'Group ID'),
                         value: selectedGroupId,
                         onChanged: (newValue) {
                           setState(() {
@@ -107,12 +107,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         }).toList(),
                       );
                     } else {
-                      return CircularProgressIndicator(); // Placeholder until groups are loaded
+                      return const CircularProgressIndicator(); // Placeholder until groups are loaded
                     }
                   },
                 ),
                 DropdownButtonFormField<int>(
-                  decoration: InputDecoration(labelText: 'Priority'),
+                  decoration: const InputDecoration(labelText: 'Priority'),
                   value: selectedPriority,
                   onChanged: (newValue) =>
                       setState(() => selectedPriority = newValue),
@@ -124,7 +124,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   }),
                 ),
                 DropdownButtonFormField<String>(
-                  decoration: InputDecoration(labelText: 'Status'),
+                  decoration: const InputDecoration(labelText: 'Status'),
                   value: selectedStatus,
                   onChanged: (newValue) =>
                       setState(() => selectedStatus = newValue!),
@@ -175,7 +175,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       }
                     }
                   },
-                  child: Text('Add'),
+                  child: const Text('Add'),
                 ),
               ],
             ),

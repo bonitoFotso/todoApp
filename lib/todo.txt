@@ -1,0 +1,8 @@
+Page d'accueil (Dashboard) : Affiche un résumé des tâches à faire aujourd'hui, des tâches en retard, etc.
+Page de création de tâche : Permet à l'utilisateur de créer une nouvelle tâche en spécifiant son nom, sa description, sa date d'échéance, etc.
+Page de liste des tâches : Affiche toutes les tâches avec la possibilité de les filtrer par statut, date, priorité, etc.
+Page de détails de la tâche : Affiche toutes les informations détaillées d'une tâche particulière, y compris son état, sa date d'échéance, etc.
+Page de profil utilisateur : Permet à l'utilisateur de gérer son profil, ses préférences, etc.
+Page d'historique des tâches : Affiche un historique des tâches terminées ou annulées.
+Page de statistiques : Affiche des statistiques sur les tâches terminées, les tâches en cours, etc.
+Page de paramètres : Permet à l'utilisateur de configurer les paramètres de l'application selon ses préférences.

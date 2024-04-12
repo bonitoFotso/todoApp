@@ -10,7 +10,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final DatabaseProvider databaseProvider;
 
   TaskBloc(this.databaseProvider)
-      : super(TaskInitial({'tasks': [], 'taskGroups': []})) {
+      : super(const TaskInitial({'tasks': [], 'taskGroups': []})) {
     on<FetchTasks>(_onFetchTasks);
     on<UpdateTaskEvent>(_onUpDateTask);
     on<DeleteTaskEvent>(_onDeleteTask);
@@ -55,16 +55,32 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     try {
       final newTask = event.task;
       await DatabaseProvider.addTask(newTask);
-      final tasks = await DatabaseProvider.getTasks();
+
+      // Récupérer la dernière tâche ajoutée
+      final List<Task> tasks = await DatabaseProvider.getTasks();
+      final Task lastTask =
+          tasks.isNotEmpty ? tasks.last : throw Exception('No tasks found');
+
+      // Créer l'historique de la dernière tâche
+      final TaskActionHistory actionHistory = TaskActionHistory(
+        taskId: lastTask.id!, // ID de la dernière tâche ajoutée
+        action: 'Created', // Action de création
+        actionDate: DateTime.now().toString(), // Date et heure actuelles
+      );
+      await DatabaseProvider.addTaskActionHistory(actionHistory);
+
+      // Récupérer à nouveau les tâches et les groupes de tâches pour inclure les données mises à jour
+      final updatedTasks = await DatabaseProvider.getTasks();
       final taskGroups = await DatabaseProvider.getTaskGroups();
       final Map<String, List<Object>> data = {
-        'tasks': tasks,
+        'tasks': updatedTasks,
         'taskGroups': taskGroups,
       };
 
-      emit(TaskSuccess(data)); // Emit a sing
+      emit(TaskSuccess(
+          data)); // Émettre un événement avec les données mises à jour
     } catch (e) {
-      //emit(TaskFailure(e.toString()));
+      emit(TaskFailure(e.toString())); // Gérer les erreurs
     }
   }
 
@@ -72,16 +88,37 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       UpdateTaskEvent event, Emitter<TaskState> emit) async {
     try {
       final upTask = event.updatedTask;
+      final task = await DatabaseProvider.getTasksById(upTask.id!);
+
+      // Vérifier si la tâche a été mise à jour
+      if (task.isOk != upTask.isOk) {
+        // Créer un historique de la mise à jour
+        final TaskActionHistory actionHistory = TaskActionHistory(
+          taskId: upTask.id!, // ID de la tâche mise à jour
+          action: upTask.isOk == true
+              ? 'Completed'
+              : 'Updated', // Action basée sur l'état de la tâche mise à jour
+          actionDate: DateTime.now().toString(), // Date et heure actuelles
+        );
+        await DatabaseProvider.addTaskActionHistory(actionHistory);
+      }
+
+      // Mettre à jour la tâche dans la base de données
       await DatabaseProvider.updateTask(upTask);
+
+      // Récupérer à nouveau les tâches et les groupes de tâches pour inclure les données mises à jour
       final tasks = await DatabaseProvider.getTasks();
       final taskGroups = await DatabaseProvider.getTaskGroups();
       final Map<String, List<Object>> data = {
         'tasks': tasks,
         'taskGroups': taskGroups,
       };
+
+      // Émettre un événement avec les données mises à jour
       emit(TaskSuccess(data));
     } catch (e) {
-      //emit(TaskFailure(e.toString()));
+      // Gérer les erreurs
+      // emit(TaskFailure(e.toString()));
     }
   }
 

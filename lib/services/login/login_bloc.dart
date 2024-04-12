@@ -9,7 +9,7 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final DatabaseProvider databaseProvider;
 
-  LoginBloc(this.databaseProvider) : super(LoginInitial(false)) {
+  LoginBloc(this.databaseProvider) : super(const LoginInitial(false)) {
     on<LoginButtonPressed>((event, emit) async {
       final username = event.username;
       final password = event.password;

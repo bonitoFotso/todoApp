@@ -6,8 +6,8 @@ import 'package:todo/services/task/task_bloc.dart';
 
 class UpDateTaskTab extends StatefulWidget {
   const UpDateTaskTab({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _UpDateTaskTabState createState() => _UpDateTaskTabState();
@@ -52,21 +52,21 @@ class _UpDateTaskTabState extends State<UpDateTaskTab> {
 
         return Container(
           padding:
-              EdgeInsets.all(16), // Ajoutez un padding pour l'espace intérieur
+              const EdgeInsets.all(16), // Ajoutez un padding pour l'espace intérieur
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 16), // Ajoutez un espace vertical
+                const SizedBox(height: 16), // Ajoutez un espace vertical
                 TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText:
                         'Task Name', // Ajoutez une étiquette pour le champ
                   ),
                   controller: nameController,
                 ),
                 TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText:
                         'Creation Date', // Ajoutez une étiquette pour le champ
                   ),
@@ -83,44 +83,44 @@ class _UpDateTaskTabState extends State<UpDateTaskTab> {
                         });
                       },
                     ),
-                    Text('Is Ok'),
+                    const Text('Is Ok'),
                   ],
                 ),
                 TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText:
                         'Modification Date', // Ajoutez une étiquette pour le champ
                   ),
                   controller: modificationDateController,
                 ),
                 TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Detail', // Ajoutez une étiquette pour le champ
                   ),
                   controller: detailController,
                 ),
                 TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText:
                         'Group ID', // Ajoutez une étiquette pour le champ
                   ),
                   controller: groupIdController,
                 ),
                 TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText:
                         'Priority', // Ajoutez une étiquette pour le champ
                   ),
                   controller: priorityController,
                 ),
                 TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Status', // Ajoutez une étiquette pour le champ
                   ),
                   controller: statusController,
                 ),
                 // Ajoutez d'autres champs TextField ici
-                SizedBox(height: 16), // Ajoutez un espace vertical
+                const SizedBox(height: 16), // Ajoutez un espace vertical
                 ElevatedButton(
                   onPressed: () {
                     final updatedTask = Task(

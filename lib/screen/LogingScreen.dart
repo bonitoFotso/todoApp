@@ -8,6 +8,8 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  LoginScreen({super.key});
+
   // Fonction pour gérer l'action de l'icône
   static void _onIconPressed(BuildContext context) {
     context.read<ToggleBloc>().add(ToggleSubmitEvent());
@@ -34,7 +36,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Connexion"), // Utilisation de la langue cohérente
+        title: const Text("Connexion"), // Utilisation de la langue cohérente
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -76,8 +78,8 @@ class LoginScreen extends StatelessWidget {
                         ));
                   },
                   child: (state as LoginInitial).isLoading
-                      ? CircularProgressIndicator()
-                      : Text('Connexion'), // Utilisation de la langue cohérente
+                      ? const CircularProgressIndicator()
+                      : const Text('Connexion'), // Utilisation de la langue cohérente
                 );
               },
             ),

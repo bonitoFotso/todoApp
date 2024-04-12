@@ -1,12 +1,12 @@
 class User {
-  int id;
+  int? id;
   String username;
   String password;
   String prenom;
   String lang;
 
   User(
-      {required this.id,
+      {this.id,
       required this.username,
       required this.password,
       required this.prenom,
@@ -34,11 +34,11 @@ class User {
 }
 
 class TaskGroup {
-  int id;
+  int? id;
   String name;
   String description;
 
-  TaskGroup({required this.id, required this.name, required this.description});
+  TaskGroup({this.id, required this.name, required this.description});
 
   Map<String, dynamic> toMap() {
     return {
@@ -114,7 +114,7 @@ class Task {
 }
 
 class TaskSchedule {
-  int id;
+  int? id;
   int taskId;
   String startDate;
   int duration;
@@ -123,7 +123,7 @@ class TaskSchedule {
   String endTime;
 
   TaskSchedule({
-    required this.id,
+    this.id,
     required this.taskId,
     required this.startDate,
     required this.duration,
@@ -158,14 +158,14 @@ class TaskSchedule {
 }
 
 class TaskScheduleDay {
-  int id;
+  int? id;
   int scheduleId;
   String dayOfWeek;
   String startTime;
   String endTime;
 
   TaskScheduleDay({
-    required this.id,
+    this.id,
     required this.scheduleId,
     required this.dayOfWeek,
     required this.startTime,
@@ -194,13 +194,13 @@ class TaskScheduleDay {
 }
 
 class TaskReport {
-  int id;
+  int? id;
   int taskId;
   String date;
   int completed;
 
   TaskReport({
-    required this.id,
+    this.id,
     required this.taskId,
     required this.date,
     required this.completed,
@@ -226,12 +226,12 @@ class TaskReport {
 }
 
 class TaskTag {
-  int id;
+  int? id;
   int taskId;
   String tag;
 
   TaskTag({
-    required this.id,
+    this.id,
     required this.taskId,
     required this.tag,
   });
@@ -254,12 +254,12 @@ class TaskTag {
 }
 
 class TaskAttachment {
-  int id;
+  int? id;
   int taskId;
   String filePath;
 
   TaskAttachment({
-    required this.id,
+    this.id,
     required this.taskId,
     required this.filePath,
   });
@@ -282,13 +282,13 @@ class TaskAttachment {
 }
 
 class TaskActionHistory {
-  int id;
+  int? id;
   int taskId;
   String action;
   String actionDate;
 
   TaskActionHistory({
-    required this.id,
+    this.id,
     required this.taskId,
     required this.action,
     required this.actionDate,
@@ -314,12 +314,12 @@ class TaskActionHistory {
 }
 
 class TaskCollaborator {
-  int id;
+  int? id;
   int taskId;
   int userId;
 
   TaskCollaborator({
-    required this.id,
+    this.id,
     required this.taskId,
     required this.userId,
   });
@@ -342,10 +342,10 @@ class TaskCollaborator {
 }
 
 class ExpenseCategory {
-  int id;
+  int? id;
   String name;
 
-  ExpenseCategory({required this.id, required this.name});
+  ExpenseCategory({this.id, required this.name});
 
   factory ExpenseCategory.fromMap(Map<String, dynamic> map) => ExpenseCategory(
         id: map['id'],
@@ -359,10 +359,10 @@ class ExpenseCategory {
 }
 
 class PaymentMethod {
-  int id;
+  int? id;
   String name;
 
-  PaymentMethod({required this.id, required this.name});
+  PaymentMethod({this.id, required this.name});
 
   factory PaymentMethod.fromMap(Map<String, dynamic> map) => PaymentMethod(
         id: map['id'],
@@ -376,7 +376,7 @@ class PaymentMethod {
 }
 
 class Transaction {
-  int id;
+  int? id;
   int userId;
   int categoryId;
   int paymentMethodId;
@@ -385,7 +385,7 @@ class Transaction {
   String note;
 
   Transaction({
-    required this.id,
+    this.id,
     required this.userId,
     required this.categoryId,
     required this.paymentMethodId,
@@ -416,7 +416,7 @@ class Transaction {
 }
 
 class Budget {
-  int id;
+  int? id;
   int userId;
   int categoryId;
   double amount;
@@ -424,7 +424,7 @@ class Budget {
   String endDate;
 
   Budget({
-    required this.id,
+    this.id,
     required this.userId,
     required this.categoryId,
     required this.amount,
@@ -452,12 +452,12 @@ class Budget {
 }
 
 class TaskTransaction {
-  int id;
+  int? id;
   int taskId;
   int transactionId;
 
   TaskTransaction({
-    required this.id,
+    this.id,
     required this.taskId,
     required this.transactionId,
   });
@@ -476,12 +476,12 @@ class TaskTransaction {
 }
 
 class TaskBudget {
-  int id;
+  int? id;
   int taskId;
   int budgetId;
 
   TaskBudget({
-    required this.id,
+    this.id,
     required this.taskId,
     required this.budgetId,
   });

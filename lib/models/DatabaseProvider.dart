@@ -236,7 +236,7 @@ class DatabaseProvider {
   }
 
   static Future<void> createUser(User user) async {
-    final Database db = await _database;
+    final Database db = _database;
     await db.insert(
       'users',
       user.toMap(),
@@ -356,7 +356,7 @@ class DatabaseProvider {
 
   static Future<void> addTaskGroup(TaskGroup taskGroup) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.insert(
         'task_groups',
         taskGroup.toMap(),
@@ -371,7 +371,7 @@ class DatabaseProvider {
 
   static Future<List<TaskGroup>> getTaskGroups() async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query('task_groups');
       return List.generate(maps.length, (i) {
         return TaskGroup.fromMap(maps[i]);
@@ -384,7 +384,7 @@ class DatabaseProvider {
 
   static Future<TaskGroup?> getTaskGroupById(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query(
         'task_groups',
         where: 'id = ?',
@@ -404,7 +404,7 @@ class DatabaseProvider {
 
   static Future<void> updateTaskGroup(TaskGroup taskGroup) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.update(
         'task_groups',
         taskGroup.toMap(),
@@ -420,7 +420,7 @@ class DatabaseProvider {
 
   static Future<void> deleteTaskGroup(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.delete(
         'task_groups',
         where: 'id = ?',
@@ -435,7 +435,7 @@ class DatabaseProvider {
 
   static Future<void> addTaskSchedule(TaskSchedule taskSchedule) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.insert(
         'task_schedules',
         taskSchedule.toMap(),
@@ -450,7 +450,7 @@ class DatabaseProvider {
 
   static Future<List<TaskSchedule>> getTaskSchedules() async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query('task_schedules');
       return List.generate(maps.length, (i) {
         return TaskSchedule.fromMap(maps[i]);
@@ -463,7 +463,7 @@ class DatabaseProvider {
 
   static Future<TaskSchedule?> getTaskScheduleById(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query(
         'task_schedules',
         where: 'id = ?',
@@ -483,7 +483,7 @@ class DatabaseProvider {
 
   static Future<void> updateTaskSchedule(TaskSchedule taskSchedule) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.update(
         'task_schedules',
         taskSchedule.toMap(),
@@ -499,7 +499,7 @@ class DatabaseProvider {
 
   static Future<void> deleteTaskSchedule(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.delete(
         'task_schedules',
         where: 'id = ?',
@@ -515,7 +515,7 @@ class DatabaseProvider {
   static Future<void> addTaskScheduleDay(
       TaskScheduleDay taskScheduleDay) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.insert(
         'task_schedule_days',
         taskScheduleDay.toMap(),
@@ -530,7 +530,7 @@ class DatabaseProvider {
 
   static Future<List<TaskScheduleDay>> getTaskScheduleDays() async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps =
           await db.query('task_schedule_days');
       return List.generate(maps.length, (i) {
@@ -544,7 +544,7 @@ class DatabaseProvider {
 
   static Future<TaskScheduleDay?> getTaskScheduleDayById(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query(
         'task_schedule_days',
         where: 'id = ?',
@@ -565,7 +565,7 @@ class DatabaseProvider {
   static Future<void> updateTaskScheduleDay(
       TaskScheduleDay taskScheduleDay) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.update(
         'task_schedule_days',
         taskScheduleDay.toMap(),
@@ -581,7 +581,7 @@ class DatabaseProvider {
 
   static Future<void> deleteTaskScheduleDay(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.delete(
         'task_schedule_days',
         where: 'id = ?',
@@ -596,7 +596,7 @@ class DatabaseProvider {
 
   static Future<void> addTaskReport(TaskReport taskReport) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.insert(
         'task_reports',
         taskReport.toMap(),
@@ -611,7 +611,7 @@ class DatabaseProvider {
 
   static Future<List<TaskReport>> getTaskReports() async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query('task_reports');
       return List.generate(maps.length, (i) {
         return TaskReport.fromMap(maps[i]);
@@ -624,7 +624,7 @@ class DatabaseProvider {
 
   static Future<TaskReport?> getTaskReportById(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query(
         'task_reports',
         where: 'id = ?',
@@ -644,7 +644,7 @@ class DatabaseProvider {
 
   static Future<void> updateTaskReport(TaskReport taskReport) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.update(
         'task_reports',
         taskReport.toMap(),
@@ -660,7 +660,7 @@ class DatabaseProvider {
 
   static Future<void> deleteTaskReport(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.delete(
         'task_reports',
         where: 'id = ?',
@@ -675,7 +675,7 @@ class DatabaseProvider {
 
   static Future<void> addTaskTag(TaskTag taskTag) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.insert(
         'task_tags',
         taskTag.toMap(),
@@ -690,7 +690,7 @@ class DatabaseProvider {
 
   static Future<List<TaskTag>> getTaskTags() async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query('task_tags');
       return List.generate(maps.length, (i) {
         return TaskTag.fromMap(maps[i]);
@@ -703,7 +703,7 @@ class DatabaseProvider {
 
   static Future<TaskTag?> getTaskTagById(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query(
         'task_tags',
         where: 'id = ?',
@@ -723,7 +723,7 @@ class DatabaseProvider {
 
   static Future<void> updateTaskTag(TaskTag taskTag) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.update(
         'task_tags',
         taskTag.toMap(),
@@ -739,7 +739,7 @@ class DatabaseProvider {
 
   static Future<void> deleteTaskTag(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.delete(
         'task_tags',
         where: 'id = ?',
@@ -754,7 +754,7 @@ class DatabaseProvider {
 
   static Future<void> addTaskAttachment(TaskAttachment taskAttachment) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.insert(
         'task_attachments',
         taskAttachment.toMap(),
@@ -769,7 +769,7 @@ class DatabaseProvider {
 
   static Future<List<TaskAttachment>> getTaskAttachments() async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps =
           await db.query('task_attachments');
       return List.generate(maps.length, (i) {
@@ -783,7 +783,7 @@ class DatabaseProvider {
 
   static Future<TaskAttachment?> getTaskAttachmentById(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query(
         'task_attachments',
         where: 'id = ?',
@@ -804,7 +804,7 @@ class DatabaseProvider {
   static Future<void> updateTaskAttachment(
       TaskAttachment taskAttachment) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.update(
         'task_attachments',
         taskAttachment.toMap(),
@@ -820,7 +820,7 @@ class DatabaseProvider {
 
   static Future<void> deleteTaskAttachment(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.delete(
         'task_attachments',
         where: 'id = ?',
@@ -836,7 +836,7 @@ class DatabaseProvider {
   static Future<void> addTaskActionHistory(
       TaskActionHistory taskActionHistory) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.insert(
         'task_actions_history',
         taskActionHistory.toMap(),
@@ -851,7 +851,7 @@ class DatabaseProvider {
 
   static Future<List<TaskActionHistory>> getTaskActionHistories() async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps =
           await db.query('task_actions_history');
       return List.generate(maps.length, (i) {
@@ -865,7 +865,7 @@ class DatabaseProvider {
 
   static Future<TaskActionHistory?> getTaskActionHistoryById(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query(
         'task_actions_history',
         where: 'id = ?',
@@ -883,10 +883,33 @@ class DatabaseProvider {
     }
   }
 
+  static Future<List<TaskActionHistory>> getTaskActionHistoryByTaskId(
+      int taskId) async {
+    try {
+      final Database db = _database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'task_actions_history',
+        where: 'task_id = ?',
+        whereArgs: [taskId],
+      );
+
+      List<TaskActionHistory> actionHistoryList = [];
+
+      for (var map in maps) {
+        actionHistoryList.add(TaskActionHistory.fromMap(map));
+      }
+
+      return actionHistoryList;
+    } catch (e) {
+      print('Failed to get task action history by task id: $e');
+      throw Exception('Failed to get task action history by task id');
+    }
+  }
+
   static Future<void> updateTaskActionHistory(
       TaskActionHistory taskActionHistory) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.update(
         'task_actions_history',
         taskActionHistory.toMap(),
@@ -902,7 +925,7 @@ class DatabaseProvider {
 
   static Future<void> deleteTaskActionHistory(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.delete(
         'task_actions_history',
         where: 'id = ?',
@@ -918,7 +941,7 @@ class DatabaseProvider {
   static Future<void> addTaskCollaborator(
       TaskCollaborator taskCollaborator) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.insert(
         'task_collaborators',
         taskCollaborator.toMap(),
@@ -933,7 +956,7 @@ class DatabaseProvider {
 
   static Future<List<TaskCollaborator>> getTaskCollaborators() async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps =
           await db.query('task_collaborators');
       return List.generate(maps.length, (i) {
@@ -947,7 +970,7 @@ class DatabaseProvider {
 
   static Future<TaskCollaborator?> getTaskCollaboratorById(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       final List<Map<String, dynamic>> maps = await db.query(
         'task_collaborators',
         where: 'id = ?',
@@ -968,7 +991,7 @@ class DatabaseProvider {
   static Future<void> updateTaskCollaborator(
       TaskCollaborator taskCollaborator) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.update(
         'task_collaborators',
         taskCollaborator.toMap(),
@@ -984,7 +1007,7 @@ class DatabaseProvider {
 
   static Future<void> deleteTaskCollaborator(int id) async {
     try {
-      final Database db = await _database;
+      final Database db = _database;
       await db.delete(
         'task_collaborators',
         where: 'id = ?',
@@ -1000,26 +1023,26 @@ class DatabaseProvider {
   // CRUD operations for expense_categories table
 
   Future<int> createExpenseCategory(String name) async {
-    final Database db = await _database;
+    final Database db = _database;
     int result = await db.insert('expense_categories', {'name': name});
     return result;
   }
 
   Future<List<Map<String, dynamic>>> getExpenseCategories() async {
-    final Database db = await _database;
+    final Database db = _database;
     List<Map<String, dynamic>> result = await db.query('expense_categories');
     return result;
   }
 
   Future<int> updateExpenseCategory(int id, String newName) async {
-    final Database db = await _database;
+    final Database db = _database;
     int result = await db.update('expense_categories', {'name': newName},
         where: 'id = ?', whereArgs: [id]);
     return result;
   }
 
   Future<int> deleteExpenseCategory(int id) async {
-    final Database db = await _database;
+    final Database db = _database;
     int result =
         await db.delete('expense_categories', where: 'id = ?', whereArgs: [id]);
     return result;
@@ -1028,26 +1051,26 @@ class DatabaseProvider {
   // CRUD operations for payment_methods table
 
   Future<int> createPaymentMethod(String name) async {
-    final Database db = await _database;
+    final Database db = _database;
     int result = await db.insert('payment_methods', {'name': name});
     return result;
   }
 
   Future<List<Map<String, dynamic>>> getPaymentMethods() async {
-    final Database db = await _database;
+    final Database db = _database;
     List<Map<String, dynamic>> result = await db.query('payment_methods');
     return result;
   }
 
   Future<int> updatePaymentMethod(int id, String newName) async {
-    final Database db = await _database;
+    final Database db = _database;
     int result = await db.update('payment_methods', {'name': newName},
         where: 'id = ?', whereArgs: [id]);
     return result;
   }
 
   Future<int> deletePaymentMethod(int id) async {
-    final Database db = await _database;
+    final Database db = _database;
     int result =
         await db.delete('payment_methods', where: 'id = ?', whereArgs: [id]);
     return result;
@@ -1057,7 +1080,7 @@ class DatabaseProvider {
 
   Future<int> createTransaction(int userId, int categoryId, int paymentMethodId,
       double amount, String date, String note) async {
-    final Database db = await _database;
+    final Database db = _database;
     int result = await db.insert('transactions', {
       'user_id': userId,
       'category_id': categoryId,
@@ -1070,14 +1093,14 @@ class DatabaseProvider {
   }
 
   Future<List<Map<String, dynamic>>> getTransactions() async {
-    final Database db = await _database;
+    final Database db = _database;
     List<Map<String, dynamic>> result = await db.query('transactions');
     return result;
   }
 
   Future<int> updateTransaction(int id, int userId, int categoryId,
       int paymentMethodId, double amount, String date, String note) async {
-    final Database db = await _database;
+    final Database db = _database;
     int result = await db.update(
         'transactions',
         {
@@ -1094,7 +1117,7 @@ class DatabaseProvider {
   }
 
   Future<int> deleteTransaction(int id) async {
-    final Database db = await _database;
+    final Database db = _database;
     int result =
         await db.delete('transactions', where: 'id = ?', whereArgs: [id]);
     return result;

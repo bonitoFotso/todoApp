@@ -9,10 +9,10 @@ class TaskDetailDialog extends StatefulWidget {
   final Task task;
   final List<TaskGroup> taskGroups;
   const TaskDetailDialog({
-    Key? key,
+    super.key,
     required this.task,
     required this.taskGroups,
-  }) : super(key: key);
+  });
 
   @override
   _TaskDetailDialogState createState() => _TaskDetailDialogState();
@@ -34,23 +34,23 @@ class _TaskDetailDialogState extends State<TaskDetailDialog>
       create: (_) =>
           TaskProvider(widget.task), // Fournir l'état initial de la tâche
       child: AlertDialog(
-        title: Text('Task Details'),
+        title: const Text('Task Details'),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             TabBar(
               controller: _tabController,
-              tabs: [
+              tabs: const [
                 Tab(text: 'Details'),
                 Tab(text: 'Modifier'),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: [
+                children: const [
                   // Onglet pour les détails généraux de la tâche
                   TaskDetailsTab(),
                   // Onglet pour modifier la tâche
@@ -65,7 +65,7 @@ class _TaskDetailDialogState extends State<TaskDetailDialog>
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('Close'),
+            child: const Text('Close'),
           ),
         ],
       ),
