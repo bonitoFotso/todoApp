@@ -115,6 +115,68 @@ class DatabaseProvider {
     FOREIGN KEY(user_id) REFERENCES users(id)
 )
   ''');
+      await db.execute('''
+        CREATE TABLE expense_categories (
+          id INTEGER PRIMARY KEY,
+          name TEXT UNIQUE
+        )
+      ''');
+
+      await db.execute('''
+        CREATE TABLE payment_methods (
+          id INTEGER PRIMARY KEY,
+          name TEXT UNIQUE
+        )
+      ''');
+
+      await db.execute('''
+        CREATE TABLE transactions (
+          id INTEGER PRIMARY KEY,
+          user_id INTEGER,
+          category_id INTEGER,
+          payment_method_id INTEGER,
+          amount REAL,
+          date TEXT,
+          note TEXT,
+          FOREIGN KEY(user_id) REFERENCES users(id),
+          FOREIGN KEY(category_id) REFERENCES expense_categories(id),
+          FOREIGN KEY(payment_method_id) REFERENCES payment_methods(id)
+        )
+      ''');
+
+      await db.execute('''
+        CREATE TABLE budgets (
+          id INTEGER PRIMARY KEY,
+          user_id INTEGER,
+          category_id INTEGER,
+          amount REAL,
+          start_date TEXT,
+          end_date TEXT,
+          FOREIGN KEY(user_id) REFERENCES users(id),
+          FOREIGN KEY(category_id) REFERENCES expense_categories(id)
+        )
+      ''');
+
+      await db.execute('''
+        CREATE TABLE task_transactions (
+          id INTEGER PRIMARY KEY,
+          task_id INTEGER,
+          transaction_id INTEGER,
+          FOREIGN KEY(task_id) REFERENCES tasks(id),
+          FOREIGN KEY(transaction_id) REFERENCES transactions(id)
+        )
+      ''');
+
+      await db.execute('''
+        CREATE TABLE task_budgets (
+          id INTEGER PRIMARY KEY,
+          task_id INTEGER,
+          budget_id INTEGER,
+          FOREIGN KEY(task_id) REFERENCES tasks(id),
+          FOREIGN KEY(budget_id) REFERENCES budgets(id)
+        )
+      ''');
+
       // Insertion d'un utilisateur par défaut
       await db.rawInsert('''
   INSERT INTO users(username, password, prenom, lang)
@@ -171,8 +233,6 @@ class DatabaseProvider {
 
       print('Database created successfully'); // Journalisation
     });
-
-    //return _database;
   }
 
   static Future<void> createUser(User user) async {
@@ -935,5 +995,108 @@ class DatabaseProvider {
       print('Failed to delete task collaborator: $e');
       throw Exception('Failed to delete task collaborator');
     }
+  }
+
+  // CRUD operations for expense_categories table
+
+  Future<int> createExpenseCategory(String name) async {
+    final Database db = await _database;
+    int result = await db.insert('expense_categories', {'name': name});
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getExpenseCategories() async {
+    final Database db = await _database;
+    List<Map<String, dynamic>> result = await db.query('expense_categories');
+    return result;
+  }
+
+  Future<int> updateExpenseCategory(int id, String newName) async {
+    final Database db = await _database;
+    int result = await db.update('expense_categories', {'name': newName},
+        where: 'id = ?', whereArgs: [id]);
+    return result;
+  }
+
+  Future<int> deleteExpenseCategory(int id) async {
+    final Database db = await _database;
+    int result =
+        await db.delete('expense_categories', where: 'id = ?', whereArgs: [id]);
+    return result;
+  }
+
+  // CRUD operations for payment_methods table
+
+  Future<int> createPaymentMethod(String name) async {
+    final Database db = await _database;
+    int result = await db.insert('payment_methods', {'name': name});
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getPaymentMethods() async {
+    final Database db = await _database;
+    List<Map<String, dynamic>> result = await db.query('payment_methods');
+    return result;
+  }
+
+  Future<int> updatePaymentMethod(int id, String newName) async {
+    final Database db = await _database;
+    int result = await db.update('payment_methods', {'name': newName},
+        where: 'id = ?', whereArgs: [id]);
+    return result;
+  }
+
+  Future<int> deletePaymentMethod(int id) async {
+    final Database db = await _database;
+    int result =
+        await db.delete('payment_methods', where: 'id = ?', whereArgs: [id]);
+    return result;
+  }
+
+  // CRUD operations for transactions table
+
+  Future<int> createTransaction(int userId, int categoryId, int paymentMethodId,
+      double amount, String date, String note) async {
+    final Database db = await _database;
+    int result = await db.insert('transactions', {
+      'user_id': userId,
+      'category_id': categoryId,
+      'payment_method_id': paymentMethodId,
+      'amount': amount,
+      'date': date,
+      'note': note
+    });
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getTransactions() async {
+    final Database db = await _database;
+    List<Map<String, dynamic>> result = await db.query('transactions');
+    return result;
+  }
+
+  Future<int> updateTransaction(int id, int userId, int categoryId,
+      int paymentMethodId, double amount, String date, String note) async {
+    final Database db = await _database;
+    int result = await db.update(
+        'transactions',
+        {
+          'user_id': userId,
+          'category_id': categoryId,
+          'payment_method_id': paymentMethodId,
+          'amount': amount,
+          'date': date,
+          'note': note
+        },
+        where: 'id = ?',
+        whereArgs: [id]);
+    return result;
+  }
+
+  Future<int> deleteTransaction(int id) async {
+    final Database db = await _database;
+    int result =
+        await db.delete('transactions', where: 'id = ?', whereArgs: [id]);
+    return result;
   }
 }

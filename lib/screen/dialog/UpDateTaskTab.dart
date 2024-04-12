@@ -5,8 +5,6 @@ import 'package:todo/services/task/TaskProvider.dart';
 import 'package:todo/services/task/task_bloc.dart';
 
 class UpDateTaskTab extends StatefulWidget {
-  //final Task? task;
-
   const UpDateTaskTab({Key? key}) : super(key: key);
 
   @override
@@ -21,12 +19,22 @@ class _UpDateTaskTabState extends State<UpDateTaskTab> {
   late TextEditingController groupIdController;
   late TextEditingController priorityController;
   late TextEditingController statusController;
-  bool isOk2 = false; // État pour stocker la valeur de Is Ok
+  late bool isOk2; // State to store the value of Is Ok
 
   @override
   void initState() {
     super.initState();
-    // Initialisez la valeur de Is Ok
+    // Initialize the controllers
+    nameController = TextEditingController();
+    creationDateController = TextEditingController();
+    modificationDateController = TextEditingController();
+    detailController = TextEditingController();
+    groupIdController = TextEditingController();
+    priorityController = TextEditingController();
+    statusController = TextEditingController();
+    // Initialize isOk2 with the value of task.isOk
+    isOk2 =
+        Provider.of<TaskProvider>(context, listen: false).task.isOk ?? false;
   }
 
   @override
@@ -34,39 +42,28 @@ class _UpDateTaskTabState extends State<UpDateTaskTab> {
     return Consumer<TaskProvider>(
       builder: (context, taskProvider, child) {
         Task task = taskProvider.task;
-        //final isOk = task.isOk;
-        nameController = TextEditingController(text: task.name ?? '');
-        creationDateController =
-            TextEditingController(text: task.creationDate ?? '');
-        modificationDateController =
-            TextEditingController(text: task.modificationDate ?? '');
-        detailController = TextEditingController(text: task.detail ?? '');
-        groupIdController =
-            TextEditingController(text: task.groupId.toString());
-        priorityController =
-            TextEditingController(text: task.priority.toString());
-        statusController = TextEditingController(text: task.status ?? '');
-        //isOk = task.isOk == 1;
+        // Set initial values for text controllers
+        nameController.text = task.name ?? '';
+        creationDateController.text = task.creationDate ?? '';
+        modificationDateController.text = task.modificationDate ?? '';
+        detailController.text = task.detail ?? '';
+        groupIdController.text = task.groupId.toString();
+        priorityController.text = task.priority.toString();
+        statusController.text = task.status ?? '';
+
         return Container(
-          padding: const EdgeInsets.all(
-              16), // Ajoutez un padding pour l'espace intérieur
+          padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 16), // Ajoutez un espace vertical
+                const SizedBox(height: 16),
                 TextField(
-                  decoration: const InputDecoration(
-                    labelText:
-                        'Task Name', // Ajoutez une étiquette pour le champ
-                  ),
+                  decoration: const InputDecoration(labelText: 'Task Name'),
                   controller: nameController,
                 ),
                 TextField(
-                  decoration: const InputDecoration(
-                    labelText:
-                        'Creation Date', // Ajoutez une étiquette pour le champ
-                  ),
+                  decoration: const InputDecoration(labelText: 'Creation Date'),
                   controller: creationDateController,
                 ),
                 Row(
@@ -75,7 +72,7 @@ class _UpDateTaskTabState extends State<UpDateTaskTab> {
                       value: isOk2,
                       onChanged: (value) {
                         setState(() {
-                          isOk2 = value!;
+                          isOk2 = value ?? false; // Handle null value
                         });
                         print(isOk2);
                       },
@@ -84,60 +81,43 @@ class _UpDateTaskTabState extends State<UpDateTaskTab> {
                   ],
                 ),
                 TextField(
-                  decoration: const InputDecoration(
-                    labelText:
-                        'Modification Date', // Ajoutez une étiquette pour le champ
-                  ),
+                  decoration:
+                      const InputDecoration(labelText: 'Modification Date'),
                   controller: modificationDateController,
                 ),
                 TextField(
-                  decoration: const InputDecoration(
-                    labelText: 'Detail', // Ajoutez une étiquette pour le champ
-                  ),
+                  decoration: const InputDecoration(labelText: 'Detail'),
                   controller: detailController,
                 ),
                 TextField(
-                  decoration: const InputDecoration(
-                    labelText:
-                        'Group ID', // Ajoutez une étiquette pour le champ
-                  ),
+                  decoration: const InputDecoration(labelText: 'Group ID'),
                   controller: groupIdController,
                 ),
                 TextField(
-                  decoration: const InputDecoration(
-                    labelText:
-                        'Priority', // Ajoutez une étiquette pour le champ
-                  ),
+                  decoration: const InputDecoration(labelText: 'Priority'),
                   controller: priorityController,
                 ),
                 TextField(
-                  decoration: const InputDecoration(
-                    labelText: 'Status', // Ajoutez une étiquette pour le champ
-                  ),
+                  decoration: const InputDecoration(labelText: 'Status'),
                   controller: statusController,
                 ),
-                // Ajoutez d'autres champs TextField ici
-                const SizedBox(height: 16), // Ajoutez un espace vertical
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     final updatedTask = Task(
                       id: task.id,
                       name: nameController.text,
                       creationDate: creationDateController.text,
-                      isOk: isOk2, // Convertir en entier
+                      isOk: isOk2,
                       modificationDate: modificationDateController.text,
                       detail: detailController.text,
-                      userId:
-                          1, // Vous devrez peut-être ajuster cette valeur en fonction de vos besoins
+                      userId: 1, // Adjust as needed
                       groupId: int.tryParse(groupIdController.text) ?? 0,
                       priority: int.tryParse(priorityController.text) ?? 0,
                       status: statusController.text,
                     );
 
-                    // Si la tâche existe déjà, émettez un événement pour la mettre à jour
                     context.read<TaskBloc>().add(UpdateTaskEvent(updatedTask));
-
-                    Navigator.of(context).pop();
                   },
                   child: const Text('Update'),
                 ),

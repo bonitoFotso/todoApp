@@ -15,10 +15,10 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners(); // Notifie les auditeurs du changement d'état
   }
 
-  //void updateIsOk(int isOkValue) {
-  //  _task.isOk = isOkValue;
-  //  notifyListeners();
-  //}
+  void updateIsOk(int isOkValue) {
+    _task.isOk = isOkValue as bool?;
+    notifyListeners();
 
-  //void updateIsOk(bool bool) {}
+    void updateIsOk(bool bool) {}
+  }
 }

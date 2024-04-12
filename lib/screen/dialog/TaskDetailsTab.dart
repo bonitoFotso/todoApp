@@ -13,16 +13,43 @@ class TaskDetailsTab extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Name: ${task.name}'),
-            SizedBox(height: 8),
-            Text('Creation Date: ${task.creationDate}'),
-            SizedBox(height: 8),
-            Text('Is Ok: ${task.isOk}'),
-            SizedBox(height: 8),
-            Text('Modification Date: ${task.modificationDate}'),
+            _buildDetailRow('Name', task.name),
+            _buildDetailRow('Creation Date', task.creationDate),
+            _buildDetailRow('Is Ok', task.isOk.toString()),
+            _buildDetailRow('Modification Date', task.modificationDate),
+            _buildDetailRow('Detail', task.detail),
+            _buildDetailRow('User ID', task.userId.toString()),
+            _buildDetailRow('Group ID', task.groupId.toString()),
+            _buildDetailRow('Priority', task.priority.toString()),
+            _buildDetailRow('Status', task.status),
           ],
         );
       },
+    );
+  }
+
+  Widget _buildDetailRow(String label, String? value) {
+    final displayValue = value ?? 'N/A'; // Use 'N/A' if value is null
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$label:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              displayValue,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -5,23 +5,20 @@ import 'package:todo/models/DataClass.dart';
 import 'package:todo/services/task/task_bloc.dart';
 
 class AddTaskDialog extends StatefulWidget {
-  final Map<String, List<Object>> dataTask;
-  const AddTaskDialog({Key? key, required this.dataTask}) : super(key: key);
+  const AddTaskDialog({Key? key}) : super(key: key);
 
   @override
   _AddTaskDialogState createState() => _AddTaskDialogState();
 }
 
 class _AddTaskDialogState extends State<AddTaskDialog> {
-  bool isOk = false;
-  TaskGroup? selectedGroup;
+  int? selectedGroupId;
   int? selectedPriority;
-  String? selectedStatus;
+  late String selectedStatus;
+  String name = '';
+  String detail = '';
 
-  String _name = '';
-  String _detail = '';
-
-  List<String> taskStatusOptions = [
+  final List<String> taskStatusOptions = [
     'To Do',
     'In Progress',
     'Done',
@@ -32,21 +29,17 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
   @override
   void initState() {
     super.initState();
-    List<Object>? taskGroups = widget.dataTask['taskGroups'];
-    if (taskGroups != null && taskGroups.isNotEmpty) {
-      selectedGroup = taskGroups[0] as TaskGroup?;
-    }
-    selectedStatus = taskStatusOptions
-        .first; // Initialize selected status to the first status option
+    selectedStatus = taskStatusOptions.first;
+    selectedPriority = 1;
+    selectedGroupId = null;
   }
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController nameController =
-        TextEditingController(text: _name);
+        TextEditingController(text: name);
     final TextEditingController detailController =
-        TextEditingController(text: _detail);
-    List<Object>? taskGroups = widget.dataTask['taskGroups'];
+        TextEditingController(text: detail);
 
     return AlertDialog(
       title: Text('Add Task'),
@@ -55,51 +48,44 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-              decoration: InputDecoration(
-                labelText: 'Task Name',
-              ),
+              decoration: InputDecoration(labelText: 'Task Name'),
               controller: nameController,
-              onChanged: (value) {
-                _name = value;
-              },
+              onChanged: (value) => setState(() => name = value),
             ),
             TextField(
-              decoration: InputDecoration(
-                labelText: 'Detail',
-              ),
+              decoration: InputDecoration(labelText: 'Detail'),
               controller: detailController,
-              onChanged: (value) {
-                _detail = value;
-              },
+              onChanged: (value) => setState(() => detail = value),
             ),
-            DropdownButtonFormField<TaskGroup>(
-              decoration: InputDecoration(
-                labelText: 'Group ID',
-              ),
-              value: selectedGroup,
-              onChanged: (TaskGroup? newValue) {
-                setState(() {
-                  selectedGroup = newValue;
-                });
+            BlocBuilder<TaskBloc, TaskState>(
+              builder: (context, state) {
+                if (state is TaskSuccess) {
+                  List<TaskGroup> taskGroups =
+                      state.data["taskGroups"] as List<TaskGroup>;
+
+                  return DropdownButtonFormField<int>(
+                    decoration: InputDecoration(labelText: 'Group ID'),
+                    value: selectedGroupId,
+                    onChanged: (newValue) =>
+                        setState(() => selectedGroupId = newValue as int?),
+                    items: taskGroups.map<DropdownMenuItem<int>>((group) {
+                      return DropdownMenuItem<int>(
+                        value: group
+                            .id, // Utilisez l'identifiant unique comme valeur
+                        child: Text(group.name),
+                      );
+                    }).toList(),
+                  );
+                } else {
+                  return CircularProgressIndicator(); // Placeholder until groups are loaded
+                }
               },
-              items:
-                  taskGroups!.map<DropdownMenuItem<TaskGroup>>((Object group) {
-                return DropdownMenuItem<TaskGroup>(
-                  value: group as TaskGroup,
-                  child: Text((group as TaskGroup).name),
-                );
-              }).toList(),
             ),
             DropdownButtonFormField<int>(
-              decoration: InputDecoration(
-                labelText: 'Priority',
-              ),
+              decoration: InputDecoration(labelText: 'Priority'),
               value: selectedPriority,
-              onChanged: (int? newValue) {
-                setState(() {
-                  selectedPriority = newValue;
-                });
-              },
+              onChanged: (newValue) =>
+                  setState(() => selectedPriority = newValue),
               items: List.generate(10, (index) {
                 return DropdownMenuItem<int>(
                   value: index + 1,
@@ -108,17 +94,11 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
               }),
             ),
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'Status',
-              ),
+              decoration: InputDecoration(labelText: 'Status'),
               value: selectedStatus,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedStatus = newValue;
-                });
-              },
-              items: taskStatusOptions
-                  .map<DropdownMenuItem<String>>((String status) {
+              onChanged: (newValue) =>
+                  setState(() => selectedStatus = newValue!),
+              items: taskStatusOptions.map<DropdownMenuItem<String>>((status) {
                 return DropdownMenuItem<String>(
                   value: status,
                   child: Text(status),
@@ -138,19 +118,18 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
         TextButton(
           child: Text('Add'),
           onPressed: () {
-            String currentDate =
-                DateFormat('yyyy-MM-dd').format(DateTime.now());
-            String currentTime = DateFormat('HH:mm:ss').format(DateTime.now());
+            final currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+            final currentTime = DateFormat('HH:mm:ss').format(DateTime.now());
 
-            if (selectedGroup != null && selectedStatus != null) {
+            if (selectedGroupId != null && selectedStatus.isNotEmpty) {
               final addTask = Task(
-                name: _name,
+                name: name,
                 creationDate: '$currentDate $currentTime',
-                isOk: isOk,
+                isOk: false, // Default value for isOk
                 modificationDate: '$currentDate $currentTime',
-                detail: _detail,
+                detail: detail,
                 userId: 1,
-                groupId: selectedGroup!.id,
+                groupId: selectedGroupId,
                 priority: selectedPriority,
                 status: selectedStatus,
               );

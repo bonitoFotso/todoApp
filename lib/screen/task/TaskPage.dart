@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/models/DataClass.dart';
 import 'package:todo/screen/dialog/AddTaskDialog.dart';
 import 'package:todo/screen/dialog/TaskDetailsDialog.dart';
+import 'package:todo/screen/task/taskDetailPage.dart';
 import 'package:todo/services/task/task_bloc.dart';
 
 class TaskPage extends StatelessWidget {
@@ -22,14 +23,13 @@ class TaskPage extends StatelessWidget {
               final Task task = tasks[index];
               return ListTile(
                 title: Text(task.name!),
-                subtitle: Text('Creation Date: ${task.status}'),
+                subtitle: Text('Creation Date: ${task.groupId}'),
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return TaskDetailDialog(
-                          task: task, taskGroups: taskGroups);
-                    },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            TaskDetailPage(task: task, taskGroups: taskGroups)),
                   );
                 },
                 trailing: IconButton(
